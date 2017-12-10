@@ -38,8 +38,8 @@ jobs:
       - run:
           name: Generate code coverage
           command: |
-          ls -lrt
-          pwd
+          'ls -lrt'
+          'pwd'
           './pmp-wdir/.bin/nyc report --reporter=text-lcov'
       - store_artifacts:
           path: test-results.xml
