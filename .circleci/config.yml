@@ -3,7 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 defaults: &defaults
-  working_directory: /pmp-wdir
+  working_directory: ~/pmp-wdir
   docker:
     - image: node:8.9.1
 
@@ -26,7 +26,7 @@ jobs:
       - save_cache:
           key: dependency-cache-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - /pmp-wdir
+            - ./node_modules
   test:
     <<: *defaults
     steps:
@@ -37,10 +37,7 @@ jobs:
           command: npm test
       - run:
           name: Generate code coverage
-          command: |
-            'ls -lrt'
-            'pwd'
-            './pmp-wdir/.bin/nyc report --reporter=text-lcov'
+          command: './node_modules/.bin/nyc report --reporter=text-lcov'
       - store_artifacts:
           path: test-results.xml
           prefix: tests
