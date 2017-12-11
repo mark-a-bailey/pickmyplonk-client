@@ -61,6 +61,15 @@ jobs:
           paths:
             - ./build
 
+  deploy:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          key: production-build-cache-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Deploy to S3 if tests pass and branch is Master
+          command: aws s3 sync /build s3://pickmyplonk.com --delete
+
 workflows:
   version: 2
   full_build_deploy_to_s3:
@@ -69,9 +78,12 @@ workflows:
       - test:
           requires:
             - install
-          filters:
-            branches:
-              only: master
       - build:
           requires:
             - test
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
