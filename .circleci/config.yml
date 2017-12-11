@@ -67,6 +67,12 @@ jobs:
       - restore_cache:
           key: production-build-cache-{{ .Environment.CIRCLE_SHA1 }}
       - run:
+          name: Install AWS CLI dependencies
+          working_directory: /
+          command: |
+             apt-get -y -qq update
+             apt-get -y -qq install awscli
+      - run:
           name: Deploy to S3 if tests pass and branch is Master
           command: aws s3 sync /build s3://pickmyplonk.com --delete
 
