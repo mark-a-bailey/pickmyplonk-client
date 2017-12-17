@@ -46,31 +46,33 @@ class App extends Component {
 
         return (
             !this.state.isAuthenticating &&
-            <div className="App container">
-                <Navbar fluid collapseOnSelect>
-                    <Navbar.Header>
-                        <Navbar.Brand>
-                            <Link to="/">Home</Link>
-                        </Navbar.Brand>
-                        <Navbar.Toggle />
-                    </Navbar.Header>
-                    <Navbar.Collapse>
-                        <Nav pullRight>
-                            {this.state.isAuthenticated
-                                ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
-                                : [
-                                    <RouteNavItem key={1} href="/signup">
-                                        Signup
-                                    </RouteNavItem>,
-                                    <RouteNavItem key={2} href="/login">
-                                        Login
-                                    </RouteNavItem>
-                                ]}
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
-                <Routes childProps={childProps} />
-            </div>
+            <Router>
+                <div className="App container">
+                    <Navbar fluid collapseOnSelect>
+                        <Navbar.Header>
+                            <Navbar.Brand>
+                                <Link to="/">Home</Link>
+                            </Navbar.Brand>
+                            <Navbar.Toggle />
+                        </Navbar.Header>
+                        <Navbar.Collapse>
+                            <Nav pullRight>
+                                {this.state.isAuthenticated
+                                    ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                                    : [
+                                        <RouteNavItem key={1} href="/signup">
+                                            Signup
+                                        </RouteNavItem>,
+                                        <RouteNavItem key={2} href="/login">
+                                            Login
+                                        </RouteNavItem>
+                                    ]}
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
+                    <Routes childProps={childProps} />
+                </div>
+            </Router>
         );
     }
 }
