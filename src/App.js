@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Link, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Nav, NavItem, Navbar } from "react-bootstrap";
 import { authUser, signOutUser } from "./libs/awsLib";
 import "./App.css";
