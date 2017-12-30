@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { ControlLabel, FormGroup, FormControl, PageHeader } from "react-bootstrap";
 import LoaderButton from "../../components/LoaderButton";
 import config from "../../config";
 import "./NewWineProducer.css";
@@ -8,16 +8,21 @@ export default class NewWineProducer extends Component {
     constructor(props) {
         super(props);
 
-        this.file = null;
-
         this.state = {
             isLoading: null,
-            content: ""
+            producerName: ""
         };
     }
 
     validateForm() {
-        return this.state.content.length > 0;
+        return this.state.producerName.length > config.validation.newWineProducer.NAME_MIN_LENGTH;
+    }
+
+    getValidationState() {
+        const length = this.state.producerName.length;
+        if (this.validateForm()) return 'success';
+        else if (length > 0) return 'error';
+        return null;
     }
 
     handleChange = event => {
@@ -26,17 +31,8 @@ export default class NewWineProducer extends Component {
         });
     }
 
-    handleFileChange = event => {
-        this.file = event.target.files[0];
-    }
-
     handleSubmit = async event => {
         event.preventDefault();
-
-        if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
-            alert("Please pick a file smaller than 5MB");
-            return;
-        }
 
         this.setState({ isLoading: true });
     }
@@ -44,17 +40,17 @@ export default class NewWineProducer extends Component {
     render() {
         return (
             <div className="NewWineProducer">
+                <PageHeader>Add New Producer</PageHeader>
+
                 <form onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="content">
+                    <FormGroup controlId="producerName" validationState={this.getValidationState()}>
+                        <ControlLabel>Name</ControlLabel>
                         <FormControl
+                            type="text"
+                            value={this.state.producerName}
                             onChange={this.handleChange}
-                            value={this.state.content}
-                            componentClass="textarea"
+                            placeholder="Producer Name"
                         />
-                    </FormGroup>
-                    <FormGroup controlId="file">
-                        <ControlLabel>Attachment</ControlLabel>
-                        <FormControl onChange={this.handleFileChange} type="file" />
                     </FormGroup>
                     <LoaderButton
                         block
