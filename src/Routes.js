@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
+import Producers from "./containers/wine/Producers";
 import NewWineBottle from "./containers/wine/NewWineBottle";
 import NewWineProducer from "./containers/wine/NewWineProducer";
 import AppliedRoute from "./components/AppliedRoute";
@@ -14,6 +15,7 @@ export default ({ childProps }) =>
         <AppliedRoute path="/login" exact component={Login} props={childProps} />
         <AppliedRoute path="/signup" exact component={Signup} props={childProps} />
         {/*logged in pages*/}
+        <AppliedRoute path="/wine/producers" exact component={Producers} props={childProps} />
         <AppliedRoute path="/wine/bottle/new" exact component={NewWineBottle} props={childProps} />
         <AppliedRoute path="/wine/producer/new" exact component={NewWineProducer} props={childProps} />
 

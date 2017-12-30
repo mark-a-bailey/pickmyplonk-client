@@ -60,9 +60,10 @@ class App extends Component {
                         <Nav pullRight>
                             {this.state.isAuthenticated
                                 ? [
-                                    <RouteNavItem key={1} href="/wine/bottle/new">New Bottle</RouteNavItem>,
-                                    <RouteNavItem key={2} href="/wine/producer/new">New Producer</RouteNavItem>,
-                                    <NavItem key={3} onClick={this.handleLogout}>Logout</NavItem>
+                                    <RouteNavItem key={1} href="/wine/producers">Producers</RouteNavItem>,
+                                    <RouteNavItem key={2} href="/wine/bottle/new">New Bottle</RouteNavItem>,
+                                    <RouteNavItem key={3} href="/wine/producer/new">New Producer</RouteNavItem>,
+                                    <NavItem key={4} onClick={this.handleLogout}>Logout</NavItem>
                                   ]
                                 : [
                                     <RouteNavItem key={1} href="/signup">Signup</RouteNavItem>,
