@@ -18,7 +18,7 @@ export default class Producers extends Component {
         }
 
         try {
-            const results = await this.producers();
+            const results = await this.loadProducers();
             this.setState({ producers: results });
         } catch (e) {
             alert(e);
@@ -27,7 +27,7 @@ export default class Producers extends Component {
         this.setState({ isLoading: false });
     }
 
-    producers() {
+    loadProducers() {
         return invokeApig({
             path: "/producer",
             method: "GET"
