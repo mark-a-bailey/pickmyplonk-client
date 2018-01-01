@@ -2,20 +2,40 @@ import React, { Component } from "react";
 import { ControlLabel, FormGroup, PageHeader } from "react-bootstrap";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import "./NewWineProducer.css";
+import { invokeApig } from "../../libs/awsLib";
 
 export default class NewWineBottle extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            isLoading: null,
+            isLoading: true,
             producer: {
                 id: "",
                 name: "",
-            }
+            },
+            producerOptions: [],
         };
-        //temp
-        this.producerOptions = [{id:"f925d0a0-eef6-11e7-8715-af61aad3c605",name:"Barefoot"},{id:"f925d0a1-eef6-11e7-8715-af61aad3c605",name:"Blossom Hill"},{id:"f925d0a2-eef6-11e7-8715-af61aad3c605",name:"Blue Nun"},{id:"f925d0a3-eef6-11e7-8715-af61aad3c605",name:"Brancott Estate"},{id:"f925d0a4-eef6-11e7-8715-af61aad3c605",name:"Camel Valley"}]
+    }
+
+    async componentDidMount() {
+        if (!this.props.isAuthenticated) {
+            return;
+        }
+        try {
+            const results = await this.loadProducers();
+            this.setState({ producerOptions: results });
+        } catch (e) {
+            alert(e);
+        }
+        this.setState({ isLoading: false });
+    }
+
+    loadProducers() {
+        return invokeApig({
+            path: "/producer",
+            method: "GET"
+        });
     }
 
     handleTypeAheadProducerChange = event => {
@@ -32,16 +52,15 @@ export default class NewWineBottle extends Component {
         return (
             <div className="NewWineBottle">
                 <PageHeader>Add New Bottle</PageHeader>
-
                 <form>
                     <FormGroup controlId="producerName">
                         <ControlLabel>Producer Name</ControlLabel>
                         <Typeahead
                             value={this.state.producer.name}
                             labelKey="name"
-                            options={this.producerOptions}
+                            options={this.state.producerOptions}
                             placeholder="Choose a Producer..."
-                            minLength={2}
+                            minLength={1}
                             onChange={this.handleTypeAheadProducerChange}
                         />
                     </FormGroup>
