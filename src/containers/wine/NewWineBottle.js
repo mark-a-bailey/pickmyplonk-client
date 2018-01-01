@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { ControlLabel, FormGroup, FormControl, PageHeader } from "react-bootstrap";
+import { ControlLabel, FormGroup, PageHeader } from "react-bootstrap";
+import { Typeahead } from 'react-bootstrap-typeahead';
 import LoaderButton from "../../components/LoaderButton";
 import config from "../../config";
 import "./NewWineProducer.css";
@@ -10,19 +11,30 @@ export default class NewWineBottle extends Component {
 
         this.state = {
             isLoading: null,
-            producerName: ""
+            producer: {
+                id: "",
+                name: "",
+            }
         };
+        //temp
+        this.producerOptions = [{id:"f925d0a0-eef6-11e7-8715-af61aad3c605",name:"Barefoot"},{id:"f925d0a1-eef6-11e7-8715-af61aad3c605",name:"Blossom Hill"},{id:"f925d0a2-eef6-11e7-8715-af61aad3c605",name:"Blue Nun"},{id:"f925d0a3-eef6-11e7-8715-af61aad3c605",name:"Brancott Estate"},{id:"f925d0a4-eef6-11e7-8715-af61aad3c605",name:"Camel Valley"}]
     }
 
     validateForm() {
-        return this.state.producerName.length > config.validation.newWineProducer.NAME_MIN_LENGTH;
+        return this.state.producer.name.length > config.validation.newWineProducer.NAME_MIN_LENGTH;
     }
 
     getValidationState() {
-        const length = this.state.producerName.length;
+        const length = this.state.producer.name.length;
         if (this.validateForm()) return 'success';
         else if (length > 0) return 'error';
         return null;
+    }
+
+    handleTypeAheadProducerChange = event => {
+        this.setState({
+            [event.target.id]: event.target.value
+        });
     }
 
     handleChange = event => {
@@ -45,11 +57,13 @@ export default class NewWineBottle extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="producerName" validationState={this.getValidationState()}>
                         <ControlLabel>Producer Name</ControlLabel>
-                        <FormControl
-                            type="text"
-                            value={this.state.producerName}
-                            onChange={this.handleChange}
-                            placeholder="Look for Producer"
+                        <Typeahead
+                            value={this.state.producer.name}
+                            labelKey="name"
+                            options={this.producerOptions}
+                            placeholder="Choose a Producer..."
+                            minLength={2}
+                            onChange={this.handleTypeAheadProducerChange}
                         />
                     </FormGroup>
                     <LoaderButton
@@ -59,8 +73,8 @@ export default class NewWineBottle extends Component {
                         disabled={!this.validateForm()}
                         type="submit"
                         isLoading={this.state.isLoading}
-                        text="Create"
-                        loadingText="Creating…"
+                        text="Search"
+                        loadingText="Searching…"
                     />
                 </form>
             </div>
